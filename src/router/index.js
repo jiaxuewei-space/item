@@ -10,8 +10,8 @@ export default new Router({
        path: '/',
         component: () => import('../components/Layout'),
         children:[
-          {path:'/student',component:()=>import('../components/Student')},
-          {path:'/course',component:()=>import('../components/Course')}
+          {path:'menu',component:()=>import('../components/menu/index')},
+          {path:'menu/add',component:()=>import('../components/menu/info')},
         ]
        }
   ]
