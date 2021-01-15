@@ -4,34 +4,55 @@
     <el-container>
       <el-aside width="150px"
         ><el-menu
-          default-active=""
+          :default-active="defaultActive"
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b"
           router
+          unique-opened
         >
-          <el-submenu index="1">
+        <el-menu-item index="/">
+            <i class="el-icon-s-home"></i>
+            首页
+        </el-menu-item>
+          <el-submenu v-for="item in menus" :key="item.id" :index="item.title">
             <template slot="title">
-              <i class="el-icon-s-tools"></i>
-              <span>系统设置</span>
+              <i :class="item.icon"></i>
+              <span>{{item.title}}</span>
             </template>
-            <el-menu-item index="/student">学生管理</el-menu-item>
-            <el-menu-item index="/course">课程管理</el-menu-item>
-            
+            <el-menu-item  v-for="subitem in item.children" :key="subitem.id" :index="subitem.url">{{subitem.title}}</el-menu-item>
           </el-submenu>
-         
         </el-menu></el-aside
       >
       <el-main>
-          <router-view></router-view>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      menus:[],
+      defaultActive:''
+    };
+  },
+  mounted(){
+    this.defaultActive = this.$route.meta.selected;
+    axios.get('/api/menulist',{params:{istree:true}}).then(res=>{
+      this.menus = res.data.list
+    })
+  },
+  watch:{
+    $route(newVal){
+      this.defaultActive = newVal.meta.selected;
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -42,10 +63,10 @@ export default {};
 .el-header {
   background: skyblue;
 }
-.el-aside{
-    background: #545c64;
+.el-aside {
+  background: #545c64;
 }
-.el-submenu .el-menu-item{
-    min-width: 150px;
+.el-submenu .el-menu-item {
+  min-width: 150px;
 }
 </style>

@@ -16,4 +16,7 @@ export default {
   padding: 0;
   margin: 0;
 }
+.el-breadcrumb__item{
+  margin-bottom:20px ;
+}
 </style>

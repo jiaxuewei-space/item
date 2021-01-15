@@ -9,9 +9,14 @@ export default new Router({
     {
        path: '/',
         component: () => import('../components/Layout'),
+        meta:{selected:'/'},
         children:[
-          {path:'menu',component:()=>import('../components/menu/index')},
-          {path:'menu/add',component:()=>import('../components/menu/info')},
+          {path:'menu',component:()=>import('../components/menu/index'),meta:{selected:'/menu'}},
+          {path:'menu/add',component:()=>import('../components/menu/info'),meta:{selected:'/menu'}},
+          {path:'menu/:id',component:()=>import('../components/menu/info'),meta:{selected:'/menu'}},
+          {path:'role',component:()=>import('../components/role/index'),meta:{selected:'/role'}},
+          {path:'role/add',component:()=>import('../components/role/info'),meta:{selected:'/role'}},
+          {path:'role/:id',component:()=>import('../components/role/info'),meta:{selected:'/role'}},
         ]
        }
   ]

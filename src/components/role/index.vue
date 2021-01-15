@@ -2,38 +2,27 @@
   <div>
     <el-breadcrumb separator=">">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>菜单管理</el-breadcrumb-item>
+      <el-breadcrumb-item>角色管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-button type="primary" @click="$router.push('/menu/add')"
+    <el-button type="primary" @click="$router.push('/role/add')"
       >添加</el-button
     >
-    <el-table :data="arr" row-key="id">
+    <el-table :data="arr"  border>
       <el-table-column label="编号" prop="id"></el-table-column>
-      <el-table-column label="菜单名称" prop="title"></el-table-column>
-      <el-table-column label="菜单类型">
-        <template slot-scope="item">
-          <el-tag v-if="item.row.type == 1">目录</el-tag>
-          <el-tag v-else>菜单</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="菜单图标" prop="icon">
-        <template slot-scope="item">
-          <i :class="item.row.icon"></i>
-        </template>
-      </el-table-column>
-      <el-table-column label="菜单地址" prop="url"></el-table-column>
+      <el-table-column label="角色名称" prop="rolename"></el-table-column>
       <el-table-column label="状态">
         <template slot-scope="item">
           <el-tag v-if="item.row.status == 1">启用</el-tag>
           <el-tag v-else>禁用</el-tag>
         </template>
       </el-table-column>
+
       <el-table-column label="操作" width:150px>
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="primary"
-            @click="$router.push('/menu/' + scope.row.id)"
+            @click="$router.push('/role/' + scope.row.id)"
             >编辑</el-button
           >
           <el-button size="mini" type="danger" @click="del(scope)"
@@ -56,13 +45,13 @@ export default {
 
   methods: {
     del(obj) {
-      this.$confirm("此操作将永久删除该菜单, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该角色, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          axios.post("/api/menudelete", { id: obj.row.id }).then((res) => {
+          axios.post("/api/roledelete", { id: obj.row.id }).then((res) => {
             if (res.data.code === 200) {
               this.arr = res.data.list;
               this.$message({
@@ -78,15 +67,11 @@ export default {
           });
         })
         .catch(() => {
-          //   this.$message({
-          //     type: "info",
-          //     message: "取消删除!"
-          //   });
         });
     },
   },
   mounted() {
-    axios.get("/api/menulist", { params: { istree: true } }).then((res) => {
+    axios.get("/api/rolelist").then((res) => {
       this.arr = res.data.list;
     });
   },
