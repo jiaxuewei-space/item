@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
   data() {
     return {
@@ -87,14 +87,14 @@ export default {
     if (this.$route.params.id) {
       this.tip = "编辑";
       //如果是编辑操作，则通过接口获取菜单详情
-      axios
+      this.axios
         .get("/api/menuinfo", { params: { id: this.$route.params.id } })
         .then((res) => {
           this.info = res.data.list;
         });
     }
 
-    axios.get("/api/menulist?pid=0").then((res) => {
+    this.axios.get("/api/menulist?pid=0").then((res) => {
       this.menuarr = res.data.list;
     });
   },
@@ -110,7 +110,7 @@ export default {
             url = "/api/menuedit";
             this.info.id = this.$route.params.id;
           }
-          axios.post(url, this.info).then((res) => {
+          this.axios.post(url, this.info).then((res) => {
             if (res.data.code === 200) {
               this.$router.push("/menu");
             }

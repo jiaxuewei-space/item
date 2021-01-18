@@ -27,6 +27,7 @@
         show-checkbox
         :data="menusarr"
         :props="defaultProps"
+        check-strictly
         ></el-tree>
       </el-form-item>
       <el-form-item label="状态">
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
   data() {
     return {
@@ -73,13 +74,13 @@ export default {
     if (this.$route.params.id) {
       this.tip = "编辑";
       //如果是编辑操作，则通过接口获取角色详情
-      axios.get("/api/roleinfo", { params: { id: this.$route.params.id } }).then((res) => {
+      this.axios.get("/api/roleinfo", { params: { id: this.$route.params.id } }).then((res) => {
           this.info = res.data.list;
           this.checkedKeys = this.info.menus.split(',').map(d=>parseInt(d));
           this.$refs.mytree.setCheckedKeys(this.checkedKeys)
         });
     }
-    axios.get('/api/menulist?istree=true').then(res=>{
+    this.axios.get('/api/menulist?istree=true').then(res=>{
         this.menusarr = res.data.list;
     })
   },
@@ -96,8 +97,8 @@ export default {
             this.info.id = this.$route.params.id;
           }
           this.info.menus = this.$refs.mytree.getCheckedKeys().join(',');
-          console.log(this.info);
-          axios.post(url, this.info).then((res) => {
+          // console.log(this.info);
+          this.axios.post(url, this.info).then((res) => {
             if (res.data.code === 200) {
               this.$router.push("/role");
             }

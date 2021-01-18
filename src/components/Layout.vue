@@ -1,6 +1,12 @@
 <template>
   <el-container class="page">
-    <el-header>Header</el-header>
+    <el-header>
+      <span class="fl">小U商城后台管理系统</span>
+      <span class="fr">
+        欢迎：{{$store.state.userinfo ? $store.state.userinfo.username:''}}
+        <a href="javascript:void(0);" @click="logout">退出</a>
+      </span>
+    </el-header>
     <el-container>
       <el-aside width="150px"
         ><el-menu
@@ -16,7 +22,7 @@
             <i class="el-icon-s-home"></i>
             首页
         </el-menu-item>
-          <el-submenu v-for="item in menus" :key="item.id" :index="item.title">
+          <el-submenu v-for="item in $store.state.userinfo.menus" :key="item.id" :index="item.title">
             <template slot="title">
               <i :class="item.icon"></i>
               <span>{{item.title}}</span>
@@ -33,7 +39,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
   data() {
     return {
@@ -43,13 +49,19 @@ export default {
   },
   mounted(){
     this.defaultActive = this.$route.meta.selected;
-    axios.get('/api/menulist',{params:{istree:true}}).then(res=>{
-      this.menus = res.data.list
-    })
+    // axios.get('/api/menulist',{params:{istree:true}}).then(res=>{
+    //   this.menus = res.data.list
+    // })
   },
   watch:{
     $route(newVal){
       this.defaultActive = newVal.meta.selected;
+    }
+  },
+  methods:{
+    logout(){
+      this.$store.commit('setUserInfo',null)
+      this.$router.push('/login')
     }
   }
 };
@@ -68,5 +80,22 @@ export default {
 }
 .el-submenu .el-menu-item {
   min-width: 150px;
+}
+.el-header{
+  color: white;
+  font-weight: bold;
+  line-height: 60px;
+}
+.fr{
+  position: absolute;
+  right: 20px;
+}
+.fr a{
+  margin-left:10px ;
+  text-decoration: none;
+  background: red;
+  padding: 5px 13px;
+  color: #fff;
+  border-radius: 5px;
 }
 </style>

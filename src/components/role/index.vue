@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          axios.post("/api/roledelete", { id: obj.row.id }).then((res) => {
+          this.axios.post("/api/roledelete", { id: obj.row.id }).then((res) => {
             if (res.data.code === 200) {
               this.arr = res.data.list;
               this.$message({
@@ -71,7 +71,7 @@ export default {
     },
   },
   mounted() {
-    axios.get("/api/rolelist").then((res) => {
+    this.axios.get("/api/rolelist").then((res) => {
       this.arr = res.data.list;
     });
   },
