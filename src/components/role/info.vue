@@ -97,7 +97,7 @@ export default {
             this.info.id = this.$route.params.id;
           }
           this.info.menus = this.$refs.mytree.getCheckedKeys().join(',');
-          // console.log(this.info);
+          
           this.axios.post(url, this.info).then((res) => {
             if (res.data.code === 200) {
               this.$router.push("/role");

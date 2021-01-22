@@ -53,9 +53,7 @@ export default {
   },
 
     mounted() {
-    this.axios({
-      url:'/api/usercount'
-    }).then(res=>{
+    this.axios({url:'/api/usercount'}).then(res=>{
       this.total = res.data.list[0].total
     })
     this.getPageList();

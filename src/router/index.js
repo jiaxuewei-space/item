@@ -9,8 +9,9 @@ const router = new Router({
     {
       path: '/',
       component: () => import('../components/Layout'),
-      meta: { selected: '/' },
+      meta: { selected: '/home' },
       children: [
+        { path: 'home', component: () => import('../components/home'), meta: { selected: '/home' } },
         { path: 'menu', component: () => import('../components/menu/index'), meta: { selected: '/menu' } },
         { path: 'menu/add', component: () => import('../components/menu/info'), meta: { selected: '/menu' } },
         { path: 'menu/:id', component: () => import('../components/menu/info'), meta: { selected: '/menu' } },
@@ -20,9 +21,20 @@ const router = new Router({
         { path: 'user', component: () => import('../components/user/index'), meta: { selected: '/user' } },
         { path: 'user/add', component: () => import('../components/user/info'), meta: { selected: '/user' } },
         { path: 'user/:id', component: () => import('../components/user/info'), meta: { selected: '/user' } },
+        { path: 'cate', component: () => import('../components/cate/index'), meta: { selected: '/cate' } },
+        { path: 'cate/add', component: () => import('../components/cate/info'), meta: { selected: '/cate' } },
+        { path: 'cate/:id', component: () => import('../components/cate/info'), meta: { selected: '/cate' } },
+        { path: 'specs', component: () => import('../components/specs/index'), meta: { selected: '/specs' } },
+        { path: 'specs/add', component: () => import('../components/specs/info'), meta: { selected: '/specs' } },
+        { path: 'specs/:id', component: () => import('../components/specs/info'), meta: { selected: '/specs' } },
+        { path: 'goods', component: () => import('../components/goods/index'), meta: { selected: '/goods' } },
+        { path: 'goods/add', component: () => import('../components/goods/info'), meta: { selected: '/goods' } },
+        { path: 'goods/:id', component: () => import('../components/goods/info'), meta: { selected: '/goods' } },
+        {path:'',redirect:'home'}
       ]
     },
-    { path: '/login', component: () => import('../components/Login') }
+    { path: '/login', component: () => import('../components/Login') },
+    
   ]
 })
 
@@ -37,10 +49,13 @@ router.beforeEach((to, from, next) => {
       if(allowpath.indexOf('/')<0){
         allowpath.push('/')
       }
+      if(allowpath.indexOf('/home')<0){
+        allowpath.push('/home')
+      }
       if(allowpath.indexOf(nowpath)>=0){
         next()//如果当前访问的路由规则，在允许访问的数组中，则执行摩恩的路由规则
       }else{
-        next('/')//否则跳转到首页
+        next('/home')//否则跳转到首页
       }
     } else {
       next('/login')

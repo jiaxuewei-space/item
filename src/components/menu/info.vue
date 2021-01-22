@@ -87,8 +87,7 @@ export default {
     if (this.$route.params.id) {
       this.tip = "编辑";
       //如果是编辑操作，则通过接口获取菜单详情
-      this.axios
-        .get("/api/menuinfo", { params: { id: this.$route.params.id } })
+      this.axios.get("/api/menuinfo", { params: { id: this.$route.params.id } })
         .then((res) => {
           this.info = res.data.list;
         });

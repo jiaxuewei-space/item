@@ -48,7 +48,7 @@ export default {
                             this.$message(res.data.msg)
                         }else{
                             this.$store.commit('setUserInfo',res.data.list)
-                            this.$router.push('/')
+                            this.$router.push('/home')
                         }
                     })
                 }

@@ -1,14 +1,24 @@
 <template>
   <el-container class="page">
     <el-header>
-      <span class="fl">小U商城后台管理系统</span>
+      <span class="fl"
+        >小U商城后台管理系统
+        <el-button type="primary" size="mini" @click="iscollapse = !iscollapse">
+          <i
+            :class="{
+              'el-icon-s-fold': !iscollapse,
+              'el-icon-s-unfold': iscollapse,
+            }"
+          ></i>
+        </el-button>
+      </span>
       <span class="fr">
-        欢迎：{{$store.state.userinfo ? $store.state.userinfo.username:''}}
+        欢迎：{{ $store.state.userinfo ? $store.state.userinfo.username : "" }}
         <a href="javascript:void(0);" @click="logout">退出</a>
       </span>
     </el-header>
     <el-container>
-      <el-aside width="150px"
+      <el-aside :style="styleA"
         ><el-menu
           :default-active="defaultActive"
           class="el-menu-vertical-demo"
@@ -17,17 +27,23 @@
           active-text-color="#ffd04b"
           router
           unique-opened
+          :collapse="iscollapse"
         >
-        <el-menu-item index="/">
+          <el-menu-item index="/home">
             <i class="el-icon-s-home"></i>
-            首页
-        </el-menu-item>
-          <el-submenu v-for="item in $store.state.userinfo.menus" :key="item.id" :index="item.title">
+            <span slot="title">首页</span>
+          </el-menu-item>
+          <el-submenu v-for="item in menus" :key="item.id" :index="item.title">
             <template slot="title">
               <i :class="item.icon"></i>
-              <span>{{item.title}}</span>
+              <span>{{ item.title }}</span>
             </template>
-            <el-menu-item  v-for="subitem in item.children" :key="subitem.id" :index="subitem.url">{{subitem.title}}</el-menu-item>
+            <el-menu-item
+              v-for="subitem in item.children"
+              :key="subitem.id"
+              :index="subitem.url"
+              >{{ subitem.title }}</el-menu-item
+            >
           </el-submenu>
         </el-menu></el-aside
       >
@@ -39,31 +55,30 @@
 </template>
 
 <script>
-// import axios from "axios";
 export default {
   data() {
     return {
-      menus:[],
-      defaultActive:''
+      menus: [],
+      defaultActive: "",
+      iscollapse: false,
+      styleA: { width: 150 },
     };
   },
-  mounted(){
+  mounted() {
     this.defaultActive = this.$route.meta.selected;
-    // axios.get('/api/menulist',{params:{istree:true}}).then(res=>{
-    //   this.menus = res.data.list
-    // })
+    this.menus = this.$store.state.userinfo.menus;
   },
-  watch:{
-    $route(newVal){
+  watch: {
+    $route(newVal) {
       this.defaultActive = newVal.meta.selected;
-    }
+    },
   },
-  methods:{
-    logout(){
-      this.$store.commit('setUserInfo',null)
-      this.$router.push('/login')
-    }
-  }
+  methods: {
+    logout() {
+      this.$store.commit("setUserInfo", null);
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 
@@ -75,23 +90,29 @@ export default {
 .el-header {
   background: skyblue;
 }
-.el-aside {
+/* .el-aside {
   background: #545c64;
-}
+} */
 .el-submenu .el-menu-item {
   min-width: 150px;
 }
-.el-header{
+.el-menu {
+  height: 100%;
+}
+.el-menu:not(.el-menu--collapse) {
+  width: 149px;
+}
+.el-header {
   color: white;
   font-weight: bold;
   line-height: 60px;
 }
-.fr{
+.fr {
   position: absolute;
   right: 20px;
 }
-.fr a{
-  margin-left:10px ;
+.fr a {
+  margin-left: 10px;
   text-decoration: none;
   background: red;
   padding: 5px 13px;
